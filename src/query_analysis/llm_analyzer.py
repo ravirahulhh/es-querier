@@ -136,17 +136,19 @@ def analyze(
         config = load_pipeline_config(config_path)
     llm_cfg = config.get("llm") or {}
     api_base = (llm_cfg.get("api_base") or "https://api.openai.com/v1").rstrip("/")
-    api_key_env = llm_cfg.get("api_key_env") or "OPENAI_API_KEY"
+    api_key_env_name = llm_cfg.get("api_key_env") or "OPENAI_API_KEY"
     model = llm_cfg.get("model") or "gpt-4o-mini"
-    # API Key 来源（按优先级）：1）配置中的 api_key  2）api_key_env 若看起来像密钥则直接使用  3）环境变量 api_key_env
-    api_key = llm_cfg.get("api_key", "") or ""
-    if not api_key and api_key_env.startswith(("sk-", "sk_")):
-        api_key = api_key_env  # 兼容：将密钥直接填在 api_key_env 的情况
+    # API Key 来源（按优先级）：1）llm.api_key  2）llm.api_key_env 若以 sk- 开头则视为密钥  3）环境变量 api_key_env  4）OpenRouter 时再试 OPENROUTER_API_KEY
+    api_key = (llm_cfg.get("api_key") or "").strip()
+    if not api_key and api_key_env_name.startswith(("sk-", "sk_")):
+        api_key = api_key_env_name.strip()  # 兼容：密钥直接写在 api_key_env
     if not api_key:
-        api_key = os.environ.get(api_key_env, "") or ""
+        api_key = (os.environ.get(api_key_env_name) or "").strip()
+    if not api_key and "openrouter" in api_base.lower():
+        api_key = (os.environ.get("OPENROUTER_API_KEY") or "").strip()
     if not api_key:
         raise ValueError(
-            f"LLM 分析需要 API Key。请设置环境变量 {api_key_env}（或配置 llm.api_key / 将密钥填在 llm.api_key_env）"
+            f"LLM 分析需要 API Key。请在 configs/pipeline.json 的 llm 下设置 api_key，或设置 api_key_env 为环境变量名（如 OPENROUTER_API_KEY）后 export 该变量。"
         )
 
     prompt = _build_prompt(normalized, domain)

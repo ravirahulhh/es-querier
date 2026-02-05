@@ -2,7 +2,7 @@
   "use_llm": true,
   "llm": {
     "api_base": "https://openrouter.ai/api/v1",
-    "api_key_env": "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",
+    "api_key_env": "OPENROUTER_API_KEY",
     "model": "bytedance-seed/seed-1.6"
   },
   "es": {

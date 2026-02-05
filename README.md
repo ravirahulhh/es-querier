@@ -49,6 +49,10 @@ uvicorn query_analysis.server:app --host 0.0.0.0 --port 8000 --reload
 ./scripts/serve.sh
 ```
 
+启动时会自动从**项目根目录**的 `.env` 加载环境变量（如 `OPENROUTER_API_KEY`），无需再在终端 `export`。
+
+**测试页面**：启动服务后请在浏览器中访问 **http://127.0.0.1:8000/** 或 **http://localhost:8000/** 打开简易测试页（不要使用 `http://0.0.0.0:8000/`，`0.0.0.0` 仅表示服务监听所有网卡，浏览器访问会报 502）。在测试页填写 query、选择 domain 后点击「解析」即可查看 constraints、final_es_query、search 等关键信息。
+
 示例请求与响应：
 
 **请求**（`POST /parse`）：
@@ -129,9 +133,18 @@ python -m query_analysis "看西游记 不是86版的 动画 高清一点" --dom
 2. 在 `configs/pipeline.json` 中配置：
    - `use_llm`: `true`
    - `llm.api_base`：OpenAI 兼容 API 地址（默认 `https://api.openai.com/v1`）
-   - `llm.api_key_env`：API Key 所在环境变量名（默认 `OPENAI_API_KEY`）
+   - `llm.api_key_env`：环境变量名（如 `OPENROUTER_API_KEY`），或直接写以 `sk-` 开头的密钥（勿提交到仓库）
    - `llm.model`：模型名（默认 `gpt-4o-mini`）
-3. 设置环境变量，例如：`export OPENAI_API_KEY=sk-...`
+3. 配置 API 密钥（二选一）：
+   - **推荐：项目根目录建 `.env` 文件**（已加入 .gitignore，勿提交）：
+     ```bash
+     # 复制示例并填写
+     cp .env.example .env
+     # 编辑 .env，填入：
+     OPENROUTER_API_KEY=sk-or-v1-你的密钥
+     ```
+   - 或启动前在终端设置：`export OPENROUTER_API_KEY=sk-or-v1-你的密钥`
+   若曾在配置里写死密钥仍报 401，多为密钥已失效，请用上述方式并重新在 [OpenRouter Keys](https://openrouter.ai/keys) 创建密钥。
 4. 调用方式不变：`parse("看西游记 动画 高清", domain="video")` 或 `POST /parse`；若需请求级指定配置，可传 `config_path` 或 `config` 覆盖。
 
 HTTP 请求可传可选字段 `config_path` 指定 pipeline 配置文件路径。
