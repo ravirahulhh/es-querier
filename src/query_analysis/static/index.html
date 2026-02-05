@@ -179,20 +179,8 @@
   <div class="response" id="response">
     <div class="error-banner" id="out-error" style="display: none;"></div>
     <div class="section">
-      <h2>原始 / 标准化</h2>
-      <div id="out-basic"></div>
-    </div>
-    <div class="section">
-      <h2>Conflict</h2>
-      <div id="out-conflict"></div>
-    </div>
-    <div class="section">
       <h2>Constraints</h2>
       <div id="out-constraints"></div>
-    </div>
-    <div class="section">
-      <h2>Dropped constraints</h2>
-      <div id="out-dropped"></div>
     </div>
     <div class="section">
       <h2>Entities</h2>
@@ -269,8 +257,8 @@
         });
         const data = await res.json();
         if (!res.ok) {
-          byId('out-error').style.display = 'none';
-          byId('out-basic').innerHTML = '<span class="error-msg">' + escapeHtml(data.detail || res.statusText) + '</span>';
+          byId('out-error').textContent = typeof data.detail === 'string' ? data.detail : (data.detail && data.detail[0] && data.detail[0].msg) ? data.detail[0].msg : res.statusText;
+          byId('out-error').style.display = 'block';
           responseEl.classList.add('visible');
           return;
         }
@@ -282,16 +270,7 @@
           byId('out-error').style.display = 'none';
         }
 
-        byId('out-basic').innerHTML =
-          '<div><strong>raw_query:</strong> ' + escapeHtml(data.raw_query || '') + '</div>' +
-          (data.normalized != null ? '<div><strong>normalized:</strong> ' + escapeHtml(data.normalized) + '</div>' : '');
-
-        byId('out-conflict').innerHTML = data.conflict
-          ? '<span class="badge conflict">conflict</span>'
-          : '<span class="badge ok">ok</span>';
-
         byId('out-constraints').innerHTML = renderTable(data.constraints || [], ['field', 'op', 'value', 'source']);
-        byId('out-dropped').innerHTML = renderTable(data.dropped_constraints || [], ['field', 'op', 'value']);
         byId('out-entities').innerHTML = (data.entities && data.entities.length)
           ? renderTable(data.entities, ['span', 'field', 'value', 'label'])
           : '<span class="empty">无</span>';
@@ -312,7 +291,8 @@
 
         responseEl.classList.add('visible');
       } catch (e) {
-        byId('out-basic').innerHTML = '<span class="error-msg">' + escapeHtml(e.message) + '</span>';
+        byId('out-error').textContent = e.message || String(e);
+        byId('out-error').style.display = 'block';
         responseEl.classList.add('visible');
       } finally {
         submitEl.disabled = false;
