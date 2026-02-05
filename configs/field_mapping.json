@@ -7,7 +7,9 @@
     "type": "tags",
     "tags": "tags",
     "resolution": "resolution",
-    "is_complete": "is_complete"
+    "is_complete": "is_complete",
+    "season": "title",
+    "episode": "title"
   },
   "book": {
     "ip": "title",

@@ -7,7 +7,9 @@
     "type": "term",
     "tags": "term",
     "resolution": "term",
-    "is_complete": "term"
+    "is_complete": "term",
+    "season": "match",
+    "episode": "match"
   },
   "book": {
     "ip": "match",

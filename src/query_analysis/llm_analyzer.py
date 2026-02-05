@@ -75,6 +75,8 @@ def _build_prompt(normalized: str, domain: Domain) -> str:
 - director: 导演，value 为字符串
 - release_year: 时间/年份，value 为数字（如 2020）
 - type: 资源类型，value 必须为以下之一: 电影, 动画片, 电视剧, 综艺, 小说
+- season: 季数，value 为数字（如 第2季、第二季、某剧2 → 2）
+- episode: 集数，value 为数字（如 第3集、3集 → 3）
 - tags: 标签，value 为字符串（单个标签）或数组（多个标签时用 op "in"）；标签请从下方允许的标签中选取或用户原意相近的词语
 """
         tags_list = load_tags()
