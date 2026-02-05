@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "query-analysis"
+version = "0.1.0"
+description = "影视/图书垂类搜索 - 多规则意图解析与查询重写 POC"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "jieba>=0.42.1",
+    "cn2an>=0.5.22",
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+    "elasticsearch>=8.0.0,<9.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+]
+llm = [
+    "httpx>=0.26.0",
+]
+
+[project.scripts]
+query-parse = "query_analysis.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

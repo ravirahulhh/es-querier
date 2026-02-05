@@ -1,0 +1,20 @@
+{
+  "video": {
+    "ip": "title",
+    "actor": "cast",
+    "director": "author",
+    "release_year": "year",
+    "type": "tags",
+    "tags": "tags",
+    "resolution": "resolution",
+    "is_complete": "is_complete"
+  },
+  "book": {
+    "ip": "title",
+    "type": "genre.keyword",
+    "release_year": "publish_year",
+    "publish_year": "publish_year",
+    "scan_quality": "scan_quality",
+    "is_full": "is_full"
+  }
+}

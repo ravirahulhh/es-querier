@@ -1,0 +1,5 @@
+jieba>=0.42.1
+cn2an>=0.5.22
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+elasticsearch>=8.0.0,<9.0.0

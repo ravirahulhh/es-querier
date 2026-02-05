@@ -1,0 +1,8 @@
+{
+  "动画": { "field": "type", "value": "animation" },
+  "电影": { "field": "type", "value": "movie" },
+  "电视剧": { "field": "type", "value": "tv" },
+  "高清": { "field": "resolution", "value": 1080, "op": ">=" },
+  "完整版": { "field": "is_complete", "value": true },
+  "新版": { "field": "release_year", "value": 2020, "op": ">=" }
+}

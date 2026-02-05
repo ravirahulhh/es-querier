@@ -1,0 +1,20 @@
+{
+  "video": {
+    "ip": "match",
+    "actor": "match",
+    "director": "match",
+    "release_year": "range",
+    "type": "term",
+    "tags": "term",
+    "resolution": "term",
+    "is_complete": "term"
+  },
+  "book": {
+    "ip": "match",
+    "type": "term",
+    "release_year": "range",
+    "publish_year": "range",
+    "scan_quality": "term",
+    "is_full": "term"
+  }
+}
